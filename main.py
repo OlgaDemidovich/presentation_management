@@ -92,11 +92,13 @@ def __board_calculation():
     ih, iw, ic = image.shape
     if results.multi_face_landmarks:
 
-        all_xy = np.array([[i.x, i.y] for i in results.multi_face_landmarks[0].landmark])
+        all_xy = np.array(
+            [[i.x, i.y] for i in results.multi_face_landmarks[0].landmark])
         all_x = all_xy[:, 0] * iw
         all_y = all_xy[:, 1] * ih
         x_nose, y_nose = int(all_x[4]), int(all_y[4])
-        x_min, x_max, y_min, y_max = int(np.min(all_x)), int(np.max(all_x)), int(np.min(all_y)), int(np.max(all_x))
+        x_min, x_max, y_min, y_max = int(np.min(all_x)), int(
+            np.max(all_x)), int(np.min(all_y)), int(np.max(all_x))
 
         f_w = x_max - x_min
         global h_board, w_board, x_board, y_board
@@ -110,9 +112,12 @@ def __board_calculation():
         y_board = y1_board
         x_board = iw - x2_board
         if videoEnabled:
-            cv2.rectangle(image, (x1_board, y1_board), (x2_board, y2_board), (255, 255, 255), 1)
-            cv2.rectangle(image, (int(x1_board + w_board * 0.3), int(y_board + h_board * 0.7)),
-                          (int(x1_board + w_board * 0.7), int(y_board + h_board * 0.3)), (255, 255, 255), 1)
+            cv2.rectangle(image, (x1_board, y1_board), (x2_board, y2_board),
+                          (255, 255, 255), 1)
+            cv2.rectangle(image, (
+                int(x1_board + w_board * 0.3), int(y_board + h_board * 0.7)),
+                          (int(x1_board + w_board * 0.7),
+                           int(y_board + h_board * 0.3)), (255, 255, 255), 1)
             cv2.circle(image, (x2_board, y1_board), 5, (255, 255, 255), -1)
 
     camera_picture = image
@@ -125,7 +130,8 @@ def __hand_detection():
     results = hands.process(image)
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     if results.multi_hand_landmarks:
-        for hand_landmarks, handedness in zip(results.multi_hand_landmarks, results.multi_handedness):
+        for hand_landmarks, handedness in zip(results.multi_hand_landmarks,
+                                              results.multi_handedness):
             landmark = list(enumerate(hand_landmarks.landmark))[8][1]
             hand_name = handedness.classification[0].label[0:]
             x, y = int(landmark.x * iw), int(landmark.y * ih)
@@ -151,13 +157,17 @@ def __cords_finger():
 
 
 def __painter_point():
-    cv2.putText(camera_picture, 'Указка влючена', (180, 40), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 0), 5)
-    cv2.putText(camera_picture, 'Указка влючена', (180, 40), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 2)
+    cv2.putText(camera_picture, 'Указка влючена', (180, 40),
+                cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 0), 5)
+    cv2.putText(camera_picture, 'Указка влючена', (180, 40),
+                cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 2)
 
 
 def __painter_commands():
-    cv2.putText(camera_picture, signal_swipe, (20, 40), cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 0), 5)
-    cv2.putText(camera_picture, signal_swipe, (20, 40), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 2)
+    cv2.putText(camera_picture, signal_swipe, (20, 40),
+                cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 0), 5)
+    cv2.putText(camera_picture, signal_swipe, (20, 40),
+                cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 2)
 
 
 def __get_cap(index):
@@ -205,7 +215,8 @@ def __watcher():
                 x_board <= x_finger <= x_board + w_board and y_board <= y_finger <= y_board + h_board:
             # (iw > x_board + w_board > x_board > 0 and ih > y_board + h_board > y_board > 0) and \
             if videoEnabled:
-                cv2.circle(camera_picture, (x_finger, y_finger), 5, (0, 0, 255), -1)
+                cv2.circle(camera_picture, (x_finger, y_finger), 5, (0, 0, 255),
+                           -1)
             __cords_finger()
             pag.moveTo(x_coordinate, y_coordinate)
 
