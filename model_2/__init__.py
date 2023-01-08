@@ -1,2 +1,0 @@
-from model_2.keypoint_classifier.keypoint_classifier import KeyPointClassifier
-from model_2.point_history_classifier.point_history_classifier import PointHistoryClassifier
